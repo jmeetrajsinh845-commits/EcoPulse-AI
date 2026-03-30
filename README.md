@@ -297,9 +297,9 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting.
 |----------|------|
 | 📁 **GitHub Repository** | [github.com/jmeetrajsinh845-commits/EcoPulse-AI](https://github.com/jmeetrajsinh845-commits/EcoPulse-AI) |
 | 🤗 **Live Demo (HuggingFace Spaces)** | [Sakshiba008/EcoPulse-Smart-Grid](https://huggingface.co/spaces/Sakshiba008/EcoPulse-Smart-Grid) |
-| 📄 **Technical Report / Paper** | `[Coming Soon]` |
-| 🎥 **Demo Video** | `[YouTube Link — fill in after recording]` |
-| 📧 **Contact / Collaboration** | `[Your Email or LinkedIn]` |
+
+
+| 📧 **Contact / Collaboration** |jmeetrajsinh845@gmail.com , https://www.linkedin.com/in/sakshiba-jadeja-a3220b355/ |
 
 ---
 
