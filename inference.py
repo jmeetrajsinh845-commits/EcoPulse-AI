@@ -1,19 +1,30 @@
-@@ -0,0 +1,18 @@
-import gradio as gr
+from fastapi import FastAPI, Request
 from env import SmartEnergyEnv
-def run():
-    env = SmartEnergyEnv(); obs = env.reset(); done = False; res = []
-    while not done:
-        b = int(obs['battery'].replace('%',''))
-        if obs['solar_ready'] == 'sunny': a = 0; d = "☀️ Solar"
-        elif obs['grid_price'] == 'low' and b <= 85: a = 3; d = "🔌 Charge"
-        elif b >= 10: a = 1; d = "🔋 Battery"
-        else: a = 2; d = "⚡ Grid"
-        o, r, done = env.step(a); res.append([f"{env.current_hour}:00", obs['grid_price'], d, r])
-    return res, f"Score: {env.total_reward}"
-with gr.Blocks() as demo:
-    gr.Markdown("# 🌿 EcoPulse AI")
-    btn = gr.Button("Run Simulation")
-    out = [gr.Dataframe(headers=["Hour", "Price", "Action", "Reward"]), gr.Textbox()]
-    btn.click(run, outputs=out)
-demo.launch()
+import uvicorn
+
+app = FastAPI()
+env = SmartEnergyEnv()
+
+@app.get("/")
+async def root():
+    return {"message": "EcoPulse AI API is Running"}
+
+@app.post("/reset")
+async def reset():
+    obs = env.reset()
+    # ખાતરી કરો કે બેટરી નંબર ફોર્મેટમાં જાય
+    if isinstance(obs['battery'], str):
+        obs['battery'] = int(obs['battery'].replace('%', ''))
+    return obs
+
+@app.post("/step")
+async def step(request: Request):
+    data = await request.json()
+    action = data.get("action")
+    obs, reward, done = env.step(action)
+    if isinstance(obs['battery'], str):
+        obs['battery'] = int(obs['battery'].replace('%', ''))
+    return {"observation": obs, "reward": reward, "done": done}
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=7860)
