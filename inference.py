@@ -12,8 +12,8 @@ async def root():
 @app.post("/reset")
 async def reset():
     obs = env.reset()
-    # ખાતરી કરો કે બેટરી નંબર ફોર્મેટમાં જાય
-    if isinstance(obs['battery'], str):
+    # ખાતરી કરો કે બેટરી નંબર ફોર્મેટમાં જાય (દા.ત. 50% ના બદલે 50)
+    if isinstance(obs.get('battery'), str):
         obs['battery'] = int(obs['battery'].replace('%', ''))
     return obs
 
@@ -22,7 +22,7 @@ async def step(request: Request):
     data = await request.json()
     action = data.get("action")
     obs, reward, done = env.step(action)
-    if isinstance(obs['battery'], str):
+    if isinstance(obs.get('battery'), str):
         obs['battery'] = int(obs['battery'].replace('%', ''))
     return {"observation": obs, "reward": reward, "done": done}
 
