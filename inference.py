@@ -9,19 +9,25 @@ env = SmartEnergyEnv()
 async def root():
     return {"message": "EcoPulse AI API is Running"}
 
-@app.post("/reset")
-async def reset():
+# Reset endpoint: GET અને POST બંનેને સપોર્ટ કરશે
+@app.api_route("/reset", methods=["GET", "POST"])
+async def reset(request: Request = None):
     obs = env.reset()
-    # ખાતરી કરો કે બેટરી નંબર ફોર્મેટમાં જાય (દા.ત. 50% ના બદલે 50)
     if isinstance(obs.get('battery'), str):
         obs['battery'] = int(obs['battery'].replace('%', ''))
     return obs
 
+# Step endpoint
 @app.post("/step")
 async def step(request: Request):
-    data = await request.json()
-    action = data.get("action")
+    try:
+        data = await request.json()
+    except:
+        data = {}
+    
+    action = data.get("action", 0) # જો action ન મળે તો default 0 લેશે
     obs, reward, done = env.step(action)
+    
     if isinstance(obs.get('battery'), str):
         obs['battery'] = int(obs['battery'].replace('%', ''))
     return {"observation": obs, "reward": reward, "done": done}
