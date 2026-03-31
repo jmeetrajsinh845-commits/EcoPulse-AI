@@ -1,20 +1,21 @@
 from fastapi import FastAPI, Request
 from pydantic import BaseModel
+from typing import Optional
 from env import SmartEnergyEnv
 import uvicorn
 
 app = FastAPI()
 env = SmartEnergyEnv()
 
-class ResetBody(BaseModel):
-    seed: int = None  # optional field — body required error fix thase
+class ResetRequest(BaseModel):
+    seed: Optional[int] = None
 
 @app.get("/")
 async def root():
     return {"message": "EcoPulse AI API is Running"}
 
 @app.api_route("/reset", methods=["GET", "POST"])
-async def reset(body: ResetBody = None):  # body optional rakho
+async def reset(body: ResetRequest = None):
     obs = env.reset()
     return {"observation": obs}
 
