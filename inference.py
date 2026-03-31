@@ -1,18 +1,21 @@
 from fastapi import FastAPI, Request
+from pydantic import BaseModel
 from env import SmartEnergyEnv
 import uvicorn
 
 app = FastAPI()
 env = SmartEnergyEnv()
 
+class ResetBody(BaseModel):
+    seed: int = None  # optional field — body required error fix thase
+
 @app.get("/")
 async def root():
     return {"message": "EcoPulse AI API is Running"}
 
 @app.api_route("/reset", methods=["GET", "POST"])
-async def reset():
+async def reset(body: ResetBody = None):  # body optional rakho
     obs = env.reset()
-    # જજની સિસ્ટમ માટે observation કી (key) માં ડેટા મોકલવો જરૂરી છે
     return {"observation": obs}
 
 @app.post("/step")
@@ -22,11 +25,10 @@ async def step(request: Request):
         action = data.get("action", 0)
     except:
         action = 0
-    
     obs, reward, done = env.step(int(action))
     return {
-        "observation": obs, 
-        "reward": float(reward), 
+        "observation": obs,
+        "reward": float(reward),
         "done": bool(done)
     }
 
