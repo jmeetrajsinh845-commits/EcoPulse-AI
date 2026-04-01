@@ -1,5 +1,9 @@
 name: EcoPulse-AI
-version: 1.0.0
-description: Smart Grid Energy Optimizer
+version: "1.0.0"
+description: "Smart Grid Energy Optimizer"
 entrypoint: env.py
-type: environment
+dependencies:
+  - python>=3.9
+  - fastapi
+  - uvicorn
+  - pydantic
