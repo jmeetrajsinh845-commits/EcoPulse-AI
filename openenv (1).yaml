@@ -1,6 +1,0 @@
-spec_version: 1
-name: EcoPulse-AI
-type: environment
-runtime: fastapi
-app: inference:app
-port: 7860
