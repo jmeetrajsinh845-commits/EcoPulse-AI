@@ -1,8 +1,0 @@
-name: EcoPulse-AI
-version: "1.0.0"
-description: "Smart Grid Energy Optimizer"
-entrypoint: env.py
-dependencies:
-  - python>=3.9
-  - gymnasium
-  - numpy
