@@ -1,6 +1,5 @@
-spec_version: 1
 name: EcoPulse-AI
+version: 1.0.0
+description: Smart Grid Energy Optimizer
+entrypoint: inference.py
 type: environment
-runtime: fastapi
-app: inference:app
-port: 7860
