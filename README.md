@@ -117,4 +117,74 @@ Try the live simulation — click **Run Simulation** and watch the agent's real-
 git clone [https://github.com/jmeetrajsinh845-commits/EcoPulse-AI](https://github.com/jmeetrajsinh845-commits/EcoPulse-AI)
 cd EcoPulse-AI
 2. Install DependenciesBashpip install -r requirements.txt
-🗺️ Future Roadmap: The Next 5 YearsYearFeatureImpact2025Core RL Agent + GIFT City simulationProof of concept, cost benchmarks2025–26EV Fleet Charging IntegrationOptimize 500+ EVs as controllable loads2026–27Peer-to-Peer Energy Trading ModuleResidents earn from surplus solar2027–28Weather Forecasting API Integration48-hour predictive horizon2028–30Multi-Agent Federated RL DeploymentCity-scale Net-Zero coordination🤝 ContributingContributions are welcome from energy engineers, ML researchers, and smart city enthusiasts!📜 LicenseThis project is licensed under the MIT License.<div align="center">Built with 💚 for a Net-Zero IndiaEcoPulse AI — Where Sustainability Meets Intelligence</div>
+🗺️ Future Roadmap: The Next 5 YearsYearFeatureImpact2025Core RL Agent + GIFT City simulationProof of concept, cost benchmarks2025–26EV Fleet Charging IntegrationOptimize 500+ EVs as controllable loads2026–27Peer-to-Peer Energy Trading ModuleResidents earn from surplus solar2027–28Weather Forecasting API Integration48-hour predictive horizon2028–30Multi-Agent Federated RL DeploymentCity-scale Net-Zero coordination🤝 ContributingContributions are welcome from energy engineers, ML researchers, and smart city enthusiasts!📜 LicenseThis project is licensed under the MIT License.<div align="center">Built with 💚 for a Net-Zero IndiaEcoPulse AI — Where Sustainability Meets Intelligence
+
+## 🔗 Links & Resources
+
+
+
+| Resource | Link |
+
+|----------|------|
+
+| 📁 **GitHub Repository** | [github.com/jmeetrajsinh845-commits/EcoPulse-AI](https://github.com/jmeetrajsinh845-commits/EcoPulse-AI) |
+
+| 🤗 **Live Demo (HuggingFace Spaces)** | [Sakshiba008/EcoPulse-Smart-Grid](https://huggingface.co/spaces/Sakshiba008/EcoPulse-Smart-Grid) |
+
+
+
+
+
+| 📧 **Contact / Collaboration** |jmeetrajsinh845@gmail.com , https://www.linkedin.com/in/sakshiba-jadeja-a3220b355/ |
+
+
+
+---
+
+
+
+## 📜 License
+
+
+
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
+
+
+
+---
+
+
+
+<div align="center">
+
+
+
+**Built with 💚 for a Net-Zero India**
+
+
+
+*EcoPulse AI — Where Sustainability Meets Intelligence*
+
+
+
+```
+
+🌿 Solar  +  🔋 Storage  +  🤖 AI  =  🏙️ Smart City  →  🌍 Net-Zero
+
+```
+
+
+
+*"The best energy is the energy you never wasted."*
+
+
+
+[![Made in India](https://img.shields.io/badge/Made%20in-India%20🇮🇳-FF9933?style=for-the-badge)](https://en.wikipedia.org/wiki/India)
+
+[![GIFT City](https://img.shields.io/badge/Focus-GIFT%20City%20%7C%20Rajkot-22C55E?style=for-the-badge)](https://giftgujarat.in/)
+
+[![Net Zero](https://img.shields.io/badge/Goal-Net--Zero%202070-10B981?style=for-the-badge)](https://pib.gov.in/PressReleasePage.aspx?PRID=1763459)
+
+
+
+</div> 
