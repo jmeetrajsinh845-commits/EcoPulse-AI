@@ -37,5 +37,9 @@ async def step(request: Request):
         "done": bool(done)
     }
 
-if __name__ == "__main__":
+def main():
     uvicorn.run(app, host="0.0.0.0", port=7860)
+
+if __name__ == "__main__":
+    main()
+    
