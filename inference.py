@@ -1,22 +1,23 @@
 from fastapi import FastAPI, Request
-from pydantic import BaseModel
-from typing import Optional
 from env import SmartEnergyEnv
 import uvicorn
 
 app = FastAPI()
 env = SmartEnergyEnv()
 
-class ResetRequest(BaseModel):
-    seed: Optional[int] = None
-
 @app.get("/")
 async def root():
     return {"message": "EcoPulse AI API is Running"}
 
 @app.api_route("/reset", methods=["GET", "POST"])
-async def reset(body: ResetRequest = None):
-    obs = env.reset()
+async def reset():
+    result = env.reset()
+    if isinstance(result, tuple):
+        obs = result[0]
+    else:
+        obs = result
+    if hasattr(obs, 'tolist'):
+        obs = obs.tolist()
     return {"observation": obs}
 
 @app.post("/step")
@@ -26,7 +27,10 @@ async def step(request: Request):
         action = data.get("action", 0)
     except:
         action = 0
-    obs, reward, done = env.step(int(action))
+    result = env.step(int(action))
+    obs, reward, done = result[0], result[1], result[2]
+    if hasattr(obs, 'tolist'):
+        obs = obs.tolist()
     return {
         "observation": obs,
         "reward": float(reward),
@@ -35,4 +39,3 @@ async def step(request: Request):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=7860)
-    
