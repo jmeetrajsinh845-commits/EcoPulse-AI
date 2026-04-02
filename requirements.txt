@@ -1,2 +1,6 @@
+fastapi
+uvicorn
 gradio
-random2
+pandas
+numpy
+gymnasium
