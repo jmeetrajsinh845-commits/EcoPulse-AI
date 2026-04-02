@@ -11,5 +11,6 @@ dependencies = [
     "uvicorn",
     "gradio",
     "pandas",
-    "numpy"
+    "numpy",
+    "gymnasium"
 ]
