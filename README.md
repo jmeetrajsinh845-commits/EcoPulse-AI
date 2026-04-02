@@ -145,15 +145,6 @@ The app allows you to:
 - Observe how the agent avoids expensive peak-hour grid purchases and maximizes solar/battery usage
 
 ---
-| Replace this | With this |
-|---|---|
-| `[PLACEHOLDER — e.g., +1842.7]` | `+1842.7` |
-| `[PLACEHOLDER — e.g., ₹2,340 / day]` | `₹2,340 / day` |
-| `[PLACEHOLDER — e.g., 87.3%]` | `87.3%` |
-| `[PLACEHOLDER — e.g., 0.82 cycles]` | `0.82 cycles` |
-| `[PLACEHOLDER — e.g., Reduced by 64%]` | `Reduced by 64%` |
-| `[PLACEHOLDER — e.g., 18.4 kg CO₂]` | `18.4 kg CO₂` |
-
 
 
 ## 🏗️ Technical Stack
