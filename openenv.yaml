@@ -1,5 +1,0 @@
-spec_version: "1.0"
-runtime: "fastapi"
-app: "inference:app"
-sdk: "docker"
-description: "EcoPulse AI - Smart Grid Optimization Environment"
