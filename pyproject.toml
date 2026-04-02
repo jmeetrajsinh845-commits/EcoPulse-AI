@@ -5,12 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ecopulse-ai"
 version = "0.1.0"
-description = "AI-powered Smart Energy Management System"
 dependencies = [
     "fastapi",
     "uvicorn",
-    "gradio",
-    "pandas",
-    "numpy",
-    "gymnasium"
+    "gymnasium",
+    "stable-baselines3",
+    "torch"
 ]
