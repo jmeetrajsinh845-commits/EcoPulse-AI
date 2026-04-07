@@ -47,10 +47,9 @@ async def step(request: Request):
         "reward": float(reward),
         "done": bool(done)
     }
-    # ફાઈલની છેલ્લે આ ઉમેરો
-def main():
+   def main():
     import uvicorn
-    uvicorn.run("inference:app", host="0.0.0.0", port=7860, reload=False)
+    uvicorn.run("inference:app", host="0.0.0.0", port=7860)
 
 if __name__ == "__main__":
     main()
