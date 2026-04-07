@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python", "-c", "from server.app import main; main()"]
+CMD ["python", "-c", "from inference import main; main()"]
