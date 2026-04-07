@@ -12,7 +12,7 @@ API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4")
 HF_TOKEN = os.getenv("HF_TOKEN")
 
-# ૨. શરત મુજબ OpenAI Client (પ્રોપર એરર હેન્ડલિંગ સાથે)
+# . શરત મુજબ OpenAI Client (પ્રોપર એરર હેન્ડલિંગ સાથે)
 try:
     if HF_TOKEN:
         client = OpenAI(base_url=API_BASE_URL, api_key=HF_TOKEN)
