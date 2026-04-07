@@ -1,10 +1,15 @@
+import os
+import sys
+import time
+import socket
+import uvicorn
 from fastapi import FastAPI, Request
 from env import SmartEnergyEnv
-import uvicorn
-import sys
 
+# FastAPI એપ શરૂ કરો
 app = FastAPI()
 
+# Environment લોડ કરો
 try:
     env = SmartEnergyEnv()
 except Exception as e:
@@ -50,7 +55,7 @@ async def step(request: Request):
         return {"observation": [], "reward": 0.0, "done": True, "error": str(e)}
 
 def run_validation():
-    """Run a quick validation episode and print structured output for Scaler validator."""
+    """Scaler validator માટે વેલિડેશન એપિસોડ રન કરો."""
     try:
         val_env = SmartEnergyEnv()
         task_name = "SmartEnergyGrid"
@@ -58,10 +63,7 @@ def run_validation():
         print(f"[START] task={task_name}", flush=True)
 
         result = val_env.reset()
-        if isinstance(result, tuple):
-            obs = result[0]
-        else:
-            obs = result
+        obs = result[0] if isinstance(result, tuple) else result
 
         total_reward = 0.0
         step_num = 0
@@ -83,9 +85,49 @@ def run_validation():
         print(f"[END] task=SmartEnergyGrid score=0.0 steps=1", flush=True)
         print(f"Validation error: {e}", flush=True)
 
+def is_port_available(host: str, port: int) -> bool:
+    """પોર્ટ ખાલી છે કે નહીં તે તપાસો."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind((host, port))
+            return True
+        except socket.error:
+            return False
+
 def main():
+    # 1. પહેલા વેલિડેશન રન કરો (તમારા જૂના કોડ મુજબ)
     run_validation()
-    uvicorn.run("inference:app", host="0.0.0.0", port=7860)
+
+    host = "0.0.0.0"
+    port = 7860
+    max_retries = 3
+    retry_delay = 5  # સેકન્ડ
+
+    # 2. પોર્ટ ચેક અને સર્વર સ્ટાર્ટ લોજિક
+    for attempt in range(1, max_retries + 1):
+        print(f"Checking port {port} (Attempt {attempt}/{max_retries})...", flush=True)
+        
+        if is_port_available(host, port):
+            print(f"Port {port} is free. Starting Uvicorn...", flush=True)
+            try:
+                # uvicorn.run માં એપ ઓબ્જેક્ટ સીધો પાસ કરો
+                uvicorn.run(app, host=host, port=port, log_level="info")
+                sys.exit(0)
+            except Exception as e:
+                if "address already in use" in str(e).lower() or "[Errno 98]" in str(e):
+                    print(f"Port bind race condition detected. Retrying...", flush=True)
+                else:
+                    print(f"Uvicorn error: {e}", flush=True)
+                    sys.exit(0)
+        else:
+            print(f"Port {port} is occupied by another process.", flush=True)
+
+        if attempt < max_retries:
+            print(f"Waiting {retry_delay} seconds before next attempt...", flush=True)
+            time.sleep(retry_delay)
+        else:
+            print(f"Failed to bind to port {port} after {max_retries} attempts. Exiting gracefully.", flush=True)
+            sys.exit(0)
 
 if __name__ == "__main__":
     main()
