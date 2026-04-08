@@ -6,10 +6,6 @@ from env import SmartEnergyEnv
 app = FastAPI()
 env = SmartEnergyEnv()
 
-@app.get("/")
-async def root():
-    return {"message": "Environment Server Running"}
-
 @app.post("/reset")
 async def reset(request: Request):
     obs = env.reset()
@@ -28,5 +24,4 @@ async def step(request: Request):
     }
 
 if __name__ == "__main__":
-    # Hugging Face માટે પોર્ટ 7860 જરૂરી છે
     uvicorn.run(app, host="0.0.0.0", port=7860)
