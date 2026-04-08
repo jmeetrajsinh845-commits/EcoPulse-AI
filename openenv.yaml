@@ -1,0 +1,7 @@
+tasks:
+  - name: task_easy
+    grader: true
+  - name: task_medium
+    grader: true
+  - name: task_hard
+    grader: true
