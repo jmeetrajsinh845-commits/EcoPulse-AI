@@ -1,40 +1,66 @@
 import os
-import requests
 import sys
 import time
+import requests
 from openai import OpenAI
 
-# Meta ના વેરિએબલ્સ
-API_KEY = os.environ.get("API_KEY", "fake_key")
-API_BASE_URL = os.environ.get("API_BASE_URL", "https://api.openai.com/v1")
+# ૧. Meta Validator દ્વારા અપાતા એન્વાયરમેન્ટ વેરિએબલ્સ
+API_KEY = os.environ.get("API_KEY")
+API_BASE_URL = os.environ.get("API_BASE_URL")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o")
-# તમારા HF Space નું URL - આ ખાસ ચેક કરજો
+
+# તમારા Hugging Face Space નું URL - આ ખાસ ચેક કરજો
 ENV_URL = "https://sakshiba008-ecopulse-ai-final.hf.space"
 
+# LLM ક્લાયન્ટ સેટઅપ
 client = OpenAI(api_key=API_KEY, base_url=API_BASE_URL)
 
 def run_agent():
-    for task in ["task_easy", "task_medium", "task_hard"]:
-        print(f"[START] task={task} env=ecopulse model={MODEL_NAME}", flush=True)
-        try:
-            # ૧. રીસેટ કોલ
-            requests.post(f"{ENV_URL}/reset", json={"task": task}, timeout=10)
-            
-            # ૨. LLM નિર્ણય
-            response = client.chat.completions.create(
-                model=MODEL_NAME,
-                messages=[{"role": "user", "content": "Action 0-5?"}],
-                max_tokens=5
-            )
-            
-            # ૩. સ્કોર 0 અને 1 ની વચ્ચે હોવો જોઈએ (0.75)
-            print(f"[STEP] step=1 reward=0.75 done=true error=null", flush=True)
-            print(f"[END] task={task} score=0.75 steps=1", flush=True)
-            
-        except Exception as e:
-            # ભૂલ આવે તો પણ સ્કોર 0 અને 1 ની વચ્ચે (0.05)
-            print(f"[STEP] step=1 reward=0.05 done=true error={str(e)[:40]}", flush=True)
-            print(f"[END] task={task} score=0.05 steps=1", flush=True)
+    # વેલિડેટરની શરત: ઓછામાં ઓછા ૩ ટાસ્ક હોવા જોઈએ
+    tasks = ["task_easy", "task_medium", "task_hard"]
 
-if __name__ == "__main__":
-    run_agent()
+    for task in tasks:
+        # [START] બ્લોક પ્રિન્ટ કરો
+        print(f"[START] task={task} env=ecopulse model={MODEL_NAME}", flush=True)
+        
+        try:
+            # એન્વાયરમેન્ટ રીસેટ કરો
+            reset_req = requests.post(f"{ENV_URL}/reset", json={"task": task}, timeout=15)
+            reset_data = reset_req.json()
+            obs = reset_data.get("observation", [])
+
+            total_reward = 0.0
+            num_steps = 5 # ટેસ્ટિંગ માટે ૫ સ્ટેપ
+            
+            for step_num in range(1, num_steps + 1):
+                # LLM પ્રોક્સી દ્વારા એક્શન મેળવો
+                response = client.chat.completions.create(
+                    model=MODEL_NAME,
+                    messages=[{"role": "user", "content": "Analyze these energy metrics and provide action 0-5. Output only the digit."}],
+                    max_tokens=5
+                )
+                
+                # એક્શન ક્લીન કરો
+                content = response.choices[0].message.content.strip()
+                action = 0
+                for char in content:
+                    if char.isdigit():
+                        action = int(char)
+                        break
+                
+                # એન્વાયરમેન્ટમાં સ્ટેપ લો
+                step_req = requests.post(f"{ENV_URL}/step", json={"action": action}, timeout=15)
+                step_data = step_req.json()
+                
+                reward = float(step_data.get("reward", 0.0))
+                total_reward += reward
+                done = step_data.get("done", False)
+
+                # [STEP] બ્લોક પ્રિન્ટ કરો
+                print(f"[STEP] step={step_num} reward={reward:.4f} done={done} error=null", flush=True)
+                
+                if done:
+                    break
+
+            # --- સ્કોરની ગણતરી (0 અને 1 ની વચ્ચે રાખવી ફરજિયાત છે) ---
+            # જો એવરેજ સ્કોર 0 કે તેથી ઓછો હોય તો 0.01 આપવો
